@@ -1,10 +1,10 @@
 pipeline {
     agent{
-            label "ubuntu_slave2"
+            label "master"
         }
         tools {
             maven 'maven'
-            // jdk 'jdk8'
+            // jdk 'jdk11'
         }
     stages {
 
