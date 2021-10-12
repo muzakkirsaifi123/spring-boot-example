@@ -9,6 +9,12 @@ pipeline {
                 sh "mvn clean package"
             }
         }
+        stage("Testing") {
+	        steps{
+                sh "mvn clean test"
+            }
+        }
+        
     }
     post {
          success {
