@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'ubuntu_slave2'
+        label 'slave_1'
     }
     stages {
         stage("Production") {
