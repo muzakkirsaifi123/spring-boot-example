@@ -3,7 +3,7 @@ pipeline{
         label "master"
     }
     tools { 
-        maven 'maven' 
+        maven 'Maven 3.6.3' 
         jdk 'jdk 11'
     }
     stages{
@@ -12,7 +12,11 @@ pipeline{
                 sh "mvn clean package"
             }
         }
-
+	stage("Testing") {
+	    steps{
+		sh "mvn clean test"
+	    }
+	}        
     }
     post{
        always{
