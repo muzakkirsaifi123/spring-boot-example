@@ -1,6 +1,6 @@
 pipeline {
     agent{
-            label "master"
+            label "ubuntu_slave2"
         }
         tools {
             maven 'maven'
