@@ -1,8 +1,15 @@
 version: 2.1
-jobs:
-  build-and-test:
+
+executors:
+  own_executor:
     docker:
       - image: cimg/openjdk:11.0
+  own_executor2:
+    docker:
+      - image: ubuntu
+jobs:
+  build-and-test:
+    executor: own_executor    
     steps:
       - checkout
       - run:
@@ -12,13 +19,21 @@ jobs:
           name: Test
           command: mvn test
   package:
-    docker: 
-      - image: cimg/openjdk:11.0
+    executor: own_executor2
+   
     steps:
       - checkout
       - run: 
           name: package
           command: mvn clean package
+  hello:
+    executor: own_executor
+    steps:
+      - checkout
+      - run:
+          name: print
+          command: echo "this is third job"
+
 
 
 workflows:
@@ -28,3 +43,10 @@ workflows:
       - package:
           requires:
             - build-and-test
+  
+  sample2:
+    jobs:
+      - package
+      - hello:
+          requires:
+            - package
