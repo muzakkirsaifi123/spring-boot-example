@@ -25,4 +25,6 @@ workflows:
   sample:
     jobs:
       - build-and-test
-      - package
+      - package:
+          requires:
+            - build-and-test
