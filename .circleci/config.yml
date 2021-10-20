@@ -6,7 +6,7 @@ executors:
       - image: cimg/openjdk:11.0
   own_executor2:
     docker:
-      - image: ubuntu
+      - image: circleci/maven@1.2.0
 jobs:
   build-and-test:
     executor: own_executor    
@@ -19,15 +19,13 @@ jobs:
           name: Test
           command: mvn test
   package:
-    executor: own_executor2
+    executor: own_executor
    
     steps:
       - checkout
       - run: 
           name: package
-          command: |
-            mvn install
-            mvn clean package
+          command: mvn clean package
   hello:
     executor: own_executor
     steps:
