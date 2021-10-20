@@ -19,9 +19,23 @@ jobs:
       - run: 
           name: package
           command: mvn clean package
+  build-deploy:
+    docker: 
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run:
+          name: Build and Deploy
+          command: |
+            set -x
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a circle-ci-deploy web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a circle-ci-deploy web
 
 workflows:
   sample:
     jobs:
       - build-and-test
       - package
+      - build-deploy
