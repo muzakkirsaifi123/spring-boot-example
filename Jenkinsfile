@@ -1,29 +1,47 @@
-pipeline{
-    agent{
-        label "slave_1"
+pipeline {
+
+    agent {label "Slave-2"}
+
+    tools {
+        maven "maven"
+        jdk "jenkins-jdk"
     }
-    tools { 
-        maven 'maven' 
-        jdk 'jdk 11'
+
+    triggers {
+        pollSCM "* * * * *"
     }
-    stages{
-        stage("building"){
-            steps{
-                sh "mvn clean package"
+    
+    stages
+    {
+        stage("Cleanup")
+        {
+            steps
+            {
+                sh 'mvn clean'
             }
         }
-	stage("Testing") {
-	    steps{
-		sh "mvn clean test"
-	    }
-	}        
+        
+        stage("Test")
+        {
+            steps
+            {
+                sh 'mvn test'
+            }
+        }
+        stage("Package")
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
     }
     post{
-       always{
+        always{
             mail to: 'mohd.saifi@knoldus.com',
 			subject: "Pipeline: ${currentBuild.fullDisplayName} is ${currentBuild.currentResult}",
 			body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}"
-        }            
+        }
         success{
             echo "========pipeline executed successfully ========"
         }
@@ -31,4 +49,5 @@ pipeline{
             echo "========pipeline execution failed========"
         }
     }
+ 
 }
